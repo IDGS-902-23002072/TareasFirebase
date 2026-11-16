@@ -1,40 +1,20 @@
-import { Link, NavLink, Route, Routes } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { Route, Routes } from "react-router-dom";
 import Inicio from "../pages/Inicio";
 import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
 import RutaPrivada from "../components/RutaPrivada";
 import Registro from "../pages/Registro";
 import Tareas from "../pages/Tareas";
+import Navegador from "../components/Navegador";
 
 function App() {
-  const { autenticado, usuario, cargando, logout } = useAuth();
 
   return (
-    <div>
-      <nav>
-        <NavLink to="/">Inicio</NavLink>
-        {" | "}
-        <NavLink to="/login">Login</NavLink>
-        {" | "}
-        <NavLink to="/register">Registro</NavLink>
+    <div className="min-h-screen flex flex-col bg-base-100 text-base-content font-sans">
 
-        <br />
+      <Navegador />
 
-        {cargando ? (
-          <span>Verificando sesión...</span>
-        ) : autenticado ? (
-          <>
-            <span>Hola {usuario?.email}</span>
-
-            <button onClick={logout}>Salir de la sesión</button>
-          </>
-        ) : (
-          <Link to="/login">Entrar a la sesión</Link>
-        )}
-      </nav>
-
-      <div>
+      <main className="flex-1 flex flex-col">
         <Routes>
           {/* Rutas públicas */}
           <Route path="/" element={<Inicio />} />
@@ -56,7 +36,8 @@ function App() {
           {/* Página no encontrada */}
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </div>
+      </main>
+
     </div>
   );
 }

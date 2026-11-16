@@ -35,6 +35,11 @@ export default function Navegador() {
               Registro
             </NavLink>
           </li>
+          <li>
+            <NavLink to="/tasks" className={claseEnlace}>
+              Tareas
+            </NavLink>
+          </li>
         </ul>
 
       </div>

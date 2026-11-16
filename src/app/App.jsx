@@ -1,44 +1,64 @@
 import { Link, NavLink, Route, Routes } from "react-router-dom";
-import Inicio  from "../pages/Inicio";
-import Login from "../pages/Login"; 
-import NotFound  from "../pages/NotFound";
 import { useAuth } from "../context/AuthContext";
+import Inicio from "../pages/Inicio";
+import Login from "../pages/Login";
+import NotFound from "../pages/NotFound";
+import RutaPrivada from "../components/RutaPrivada";
+import Registro from "../pages/Registro";
+import Tareas from "../pages/Tareas";
 
 function App() {
-  const { autenticado, usuario, logout } = useAuth();
+  const { autenticado, usuario, cargando, logout } = useAuth();
+
   return (
     <div>
       <nav>
         <NavLink to="/">Inicio</NavLink>
+        {" | "}
         <NavLink to="/login">Login</NavLink>
+        {" | "}
+        <NavLink to="/register">Registro</NavLink>
+
         <br />
 
-        {autenticado ? (
+        {cargando ? (
+          <span>Verificando sesión...</span>
+        ) : autenticado ? (
           <>
-            <span>Hola {usuario}</span>
-            <button onClick={logout}>Salir de la sesion</button>
+            <span>Hola {usuario?.email}</span>
+
+            <button onClick={logout}>Salir de la sesión</button>
           </>
         ) : (
-          <>
-            <Link to="/login">Entrar a la sesion</Link>
-          </>
+          <Link to="/login">Entrar a la sesión</Link>
         )}
       </nav>
+
       <div>
         <Routes>
-        <Route path="/" element={<Inicio/>}></Route>
-        <Route path="/login" element={<Login />}></Route>
-        {/* <Route path="/perfil" element={
-          <RutaPrivada>
-            <Perfil />
-          </RutaPrivada>
-          }></Route> */}
-        <Route path="*" element={<NotFound />}></Route>
+          {/* Rutas públicas */}
+          <Route path="/" element={<Inicio />} />
 
+          <Route path="/login" element={<Login />} />
+
+          <Route path="/register" element={<Registro />} />
+
+          {/* Ruta privada */}
+          <Route
+            path="/tasks"
+            element={
+              <RutaPrivada>
+                <Tareas />
+              </RutaPrivada>
+            }
+          />
+
+          {/* Página no encontrada */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </div>
   );
 }
 
-export default App
+export default App;

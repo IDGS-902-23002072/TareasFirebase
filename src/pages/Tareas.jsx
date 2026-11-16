@@ -9,7 +9,7 @@ import {
   editarTarea,
   cambiarEstadoTarea,
   eliminarTarea
-} from "../services/taskService";
+} from "../services/tareasService";
 
 export default function Tareas() {
 

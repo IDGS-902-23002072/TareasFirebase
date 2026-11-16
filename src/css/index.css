@@ -1,0 +1,27 @@
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=DM+Sans:wght@400;500;600&display=swap");
+
+@plugin "daisyui" { themes: false; }
+
+@plugin "daisyui/theme" {
+  name: "tareas";
+  default: true;
+  color-scheme: light;
+  --color-base-100: oklch(98% 0.012 85);
+  --color-base-200: oklch(95% 0.015 85);
+  --color-base-300: oklch(90% 0.02 85);
+  --color-base-content: oklch(24% 0.03 150);
+  --color-primary: oklch(55% 0.15 40);
+  --color-primary-content: oklch(98% 0.01 85);
+  --color-neutral: oklch(26% 0.04 155);
+  --color-neutral-content: oklch(95% 0.015 85);
+  --color-error: oklch(55% 0.19 27);
+  --radius-selector: 0.25rem;
+  --radius-field: 0.125rem;
+  --radius-box: 0.5rem;
+}
+
+@theme {
+  --font-display: "Fraunces", serif;
+  --font-sans: "DM Sans", sans-serif;
+}

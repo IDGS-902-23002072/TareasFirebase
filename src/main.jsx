@@ -1,5 +1,5 @@
-import './index.css'
-import App from './App.jsx'
+import './css/index.css'
+import App from './app/App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './auth/AuthContext.jsx'
 import ReactDOM from 'react-dom/client' 

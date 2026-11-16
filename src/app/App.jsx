@@ -2,7 +2,7 @@ import { Link, NavLink, Route, Routes } from "react-router-dom";
 import Inicio  from "../pages/Inicio";
 import Login from "../pages/Login"; 
 import NotFound  from "../pages/NotFound";
-import { useAuth } from "../auth/AuthContext";
+import { useAuth } from "../context/AuthContext";
 
 function App() {
   const { autenticado, usuario, logout } = useAuth();

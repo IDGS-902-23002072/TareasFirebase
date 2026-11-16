@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 
 import { useAuth } from "../context/AuthContext";
@@ -148,121 +147,212 @@ export default function Tareas() {
   };
 
   if (cargando) {
-    return <h2>Cargando tareas...</h2>;
+    return (
+      <div className="flex-1 px-6 py-12 lg:px-12">
+        <h2 className="flex items-center gap-3 font-display text-2xl">
+          <span className="loading loading-spinner loading-md text-primary" />
+          Cargando tareas...
+        </h2>
+      </div>
+    );
   }
 
   return (
 
-    <div>
+    <div className="flex-1 px-6 py-10 lg:px-12 lg:py-14">
 
-      <h1>Mis tareas</h1>
+      <div className="max-w-6xl">
 
-      <p>Bienvenido: {usuario?.email}</p>
+        {/* Encabezado */}
+        <header className="mb-12 border-b border-base-300 pb-8">
 
-      <h2>{editando ? "Editar tarea" : "Nueva tarea"}</h2>
+          <p className="text-xs uppercase tracking-[0.25em] text-primary font-semibold mb-3">
+            Panel personal
+          </p>
 
-      <form onSubmit={handleSubmit}>
+          <h1 className="font-display text-4xl sm:text-5xl leading-tight">
+            Mis tareas
+          </h1>
 
-        <div>
-          <label>Título:</label>
+          <p className="mt-3 text-sm text-base-content/70">
+            Bienvenido: <span className="font-semibold">{usuario?.email}</span>
+          </p>
 
-          <input
-            type="text"
-            value={titulo}
-            onChange={(e) => setTitulo(e.target.value)}
-            maxLength={120}
-            required
-          />
-        </div>
+        </header>
 
-        <div>
-          <label>Descripción:</label>
+        <div className="grid lg:grid-cols-[22rem_1fr] gap-12 xl:gap-16 items-start">
 
-          <textarea
-            value={descripcion}
-            onChange={(e) => setDescripcion(e.target.value)}
-            maxLength={500}
-          />
-        </div>
-
-        <button type="submit">
-          {editando ? "Guardar cambios" : "Crear tarea"}
-        </button>
-
-        {editando && (
-          <button type="button" onClick={cancelarEdicion}>
-            Cancelar
-          </button>
-        )}
-
-      </form>
-
-      {error && (
-        <p style={{ color: "red" }}>{error}</p>
-      )}
-
-      <hr />
-
-      <h2>Lista de tareas ({tareas.length})</h2>
-
-      {tareas.length === 0 ? (
-
-        <p>No tienes tareas registradas.</p>
-
-      ) : (
-
-        tareas.map((tarea) => (
-
-          <div
-            key={tarea.id}
-            style={{
-              border: "1px solid gray",
-              padding: "15px",
-              marginBottom: "10px"
-            }}
+          {/* Formulario */}
+          <section
+            className={
+              "lg:sticky lg:top-8 border bg-base-200/60 p-6 rounded-box " +
+              (editando
+                ? "border-primary border-l-4"
+                : "border-base-300")
+            }
           >
 
-            <h3
-              style={{
-                textDecoration: tarea.completada
-                  ? "line-through"
-                  : "none"
-              }}
-            >
-              {tarea.titulo}
-            </h3>
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="font-display text-2xl">
+                {editando ? "Editar tarea" : "Nueva tarea"}
+              </h2>
 
-            <p>{tarea.descripcion}</p>
+              {editando && (
+                <span className="badge badge-primary badge-soft badge-sm">
+                  Editando
+                </span>
+              )}
+            </div>
 
-            <label>
-              <input
-                type="checkbox"
-                checked={tarea.completada}
-                onChange={() => handleEstado(tarea)}
-              />
+            <form onSubmit={handleSubmit} className="space-y-4">
 
-              Completada
-            </label>
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend text-sm">Título:</legend>
 
-            <br />
+                <input
+                  type="text"
+                  className="input w-full"
+                  placeholder="¿Qué hay que hacer?"
+                  value={titulo}
+                  onChange={(e) => setTitulo(e.target.value)}
+                  maxLength={120}
+                  required
+                />
+              </fieldset>
 
-            <button
-              onClick={() => prepararEdicion(tarea)}
-            >
-              Editar
-            </button>
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend text-sm">Descripción:</legend>
 
-            <button
-              onClick={() => handleEliminar(tarea.id)}
-            >
-              Eliminar
-            </button>
+                <textarea
+                  className="textarea w-full h-28"
+                  placeholder="Detalles (opcional)"
+                  value={descripcion}
+                  onChange={(e) => setDescripcion(e.target.value)}
+                  maxLength={500}
+                />
+              </fieldset>
 
-          </div>
+              <div className="flex gap-2 pt-1">
 
-        ))
+                <button type="submit" className="btn btn-primary flex-1">
+                  {editando ? "Guardar cambios" : "Crear tarea"}
+                </button>
 
-      )}
+                {editando && (
+                  <button
+                    type="button"
+                    className="btn btn-outline"
+                    onClick={cancelarEdicion}
+                  >
+                    Cancelar
+                  </button>
+                )}
+
+              </div>
+
+            </form>
+
+            {error && (
+              <div role="alert" className="alert alert-error alert-soft mt-5">
+                <span>{error}</span>
+              </div>
+            )}
+
+          </section>
+
+          {/* Lista */}
+          <section>
+
+            <h2 className="font-display text-2xl mb-5 flex items-baseline gap-3">
+              Lista de tareas
+              <span className="badge badge-neutral badge-sm">
+                {tareas.length}
+              </span>
+            </h2>
+
+            {tareas.length === 0 ? (
+
+              <div className="border border-dashed border-base-300 p-10 rounded-box">
+                <p className="font-display text-xl">Todo despejado.</p>
+                <p className="text-sm text-base-content/60 mt-1">
+                  No tienes tareas registradas.
+                </p>
+              </div>
+
+            ) : (
+
+              <ul className="border border-base-300 divide-y divide-base-300 rounded-box overflow-hidden">
+
+                {tareas.map((tarea) => (
+
+                  <li
+                    key={tarea.id}
+                    className={
+                      "p-5 flex flex-col sm:flex-row sm:items-start gap-4 " +
+                      (tarea.completada ? "bg-base-200/50" : "bg-base-100")
+                    }
+                  >
+
+                    <div className="flex-1 min-w-0">
+
+                      <h3
+                        className={
+                          "font-display text-xl leading-snug wrap-break-word " +
+                          (tarea.completada ? "line-through opacity-50" : "")
+                        }
+                      >
+                        {tarea.titulo}
+                      </h3>
+
+                      {tarea.descripcion && (
+                        <p className="mt-1 text-sm text-base-content/70 wrap-break-word">
+                          {tarea.descripcion}
+                        </p>
+                      )}
+
+                      <label className="mt-4 flex items-center gap-2 text-sm cursor-pointer w-fit">
+                        <input
+                          type="checkbox"
+                          className="checkbox checkbox-primary checkbox-sm"
+                          checked={tarea.completada}
+                          onChange={() => handleEstado(tarea)}
+                        />
+                        Completada
+                      </label>
+
+                    </div>
+
+                    <div className="flex sm:flex-col gap-1 shrink-0">
+
+                      <button
+                        className="btn btn-ghost btn-sm justify-start"
+                        onClick={() => prepararEdicion(tarea)}
+                      >
+                        Editar
+                      </button>
+
+                      <button
+                        className="btn btn-ghost btn-sm justify-start text-error"
+                        onClick={() => handleEliminar(tarea.id)}
+                      >
+                        Eliminar
+                      </button>
+
+                    </div>
+
+                  </li>
+
+                ))}
+
+              </ul>
+
+            )}
+
+          </section>
+
+        </div>
+
+      </div>
 
     </div>
   );
